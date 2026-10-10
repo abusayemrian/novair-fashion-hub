@@ -1,0 +1,276 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NOVAIR FASHION HUB | Admin</title>
+<style>
+:root{--bg:#e9e1d5;--panel:#f8f3eb;--ink:#171512;--gold:#8b7049;--line:#cfc3b2}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px Arial,sans-serif}
+header{background:var(--ink);color:white;padding:20px;letter-spacing:2px;font-weight:bold}
+main{max-width:950px;margin:28px auto;padding:0 15px}
+.card{background:var(--panel);border:1px solid var(--line);padding:22px;margin-bottom:18px;border-radius:8px}
+h1,h2{font-family:Georgia,serif;font-weight:400}
+label{display:block;margin:12px 0 5px;font-size:13px}
+input,textarea{width:100%;padding:12px;border:1px solid var(--line);background:white;font:inherit;border-radius:4px}
+textarea{min-height:75px}
+button{padding:12px 16px;border:1px solid var(--gold);background:var(--gold);color:white;cursor:pointer;border-radius:4px;margin:8px 5px 0 0}
+.secondary{background:transparent;color:var(--ink)}
+.danger{background:#7c3028;border-color:#7c3028}
+.status{background:#eee5d8;padding:10px;margin-top:12px;white-space:pre-wrap;overflow-wrap:anywhere}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.products{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.product{background:white;border:1px solid var(--line);padding:10px;overflow-wrap:anywhere}
+.product img{width:100%;height:160px;object-fit:cover;background:#eee}
+.product h3{font:19px Georgia,serif}
+.muted{color:#6f685e;font-size:13px}
+.hidden{display:none!important}
+@media(max-width:600px){.grid{grid-template-columns:1fr}.card{padding:15px}}
+</style>
+</head>
+<body>
+<header>NOVAIR FASHION HUB — ADMIN</header>
+<main>
+<section class="card">
+<h1>Product Management</h1>
+<p class="muted">Manage your fashion products securely.</p>
+</section>
+
+<section class="card" id="setup">
+<h2>Connect Supabase</h2>
+<label>Project URL</label>
+<input id="url" placeholder="https://YOUR_PROJECT.supabase.co">
+<label>Publishable key</label>
+<input id="key" placeholder="sb_publishable_...">
+<button id="connect">Connect</button>
+<div class="status" id="setupStatus">Enter your project details.</div>
+</section>
+
+<section class="card hidden" id="login">
+<h2>Admin Login</h2>
+<label>Email</label>
+<input id="email" type="email" autocomplete="username">
+<label>Password</label>
+<input id="password" type="password" autocomplete="current-password">
+<button id="signIn">Sign in</button>
+<button class="secondary hidden" id="signOut">Sign out</button>
+<div class="status" id="loginStatus"></div>
+</section>
+
+<section class="card hidden" id="editor">
+<h2 id="editorTitle">Add a Product</h2>
+<form id="productForm">
+<input id="productId" type="hidden">
+<label>Product name *</label>
+<input id="name" required maxlength="150" placeholder="Men's Cargo Pants">
+<div class="grid">
+<div><label>Price (QAR)</label><input id="price" type="number" min="0" step="0.01"></div>
+<div><label>Bundle offer</label><input id="bundle" maxlength="120" placeholder="4 PCS Bundle Offer"></div>
+</div>
+<label>Description</label>
+<textarea id="description" maxlength="2000"></textarea>
+<label>Product photos (select multiple)</label>
+<input id="photos" type="file" accept="image/jpeg,image/png,image/webp" multiple>
+<p class="muted">JPG, PNG or WebP. Maximum 8 MB per image. Existing images remain when editing.</p>
+<label><input id="active" type="checkbox" checked style="width:auto"> Show product on website</label>
+<button type="submit" id="save">Save Product</button>
+<button type="button" class="secondary hidden" id="cancel">Cancel Edit</button>
+</form>
+<div class="status" id="productStatus"></div>
+</section>
+
+<section class="card hidden" id="catalog">
+<h2>Products</h2>
+<button class="secondary" id="refresh">Refresh list</button>
+<div class="products" id="list"></div>
+</section>
+</main>
+
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+const $ = id => document.getElementById(id);
+const show = (id, visible=true) => $(id).classList.toggle('hidden', !visible);
+const say = (id, text) => $(id).textContent = text;
+let db = null;
+let admin = null;
+
+$('connect').onclick = async () => {
+  const url = $('url').value.trim().replace(/\/+$/, '');
+  const key = $('key').value.trim();
+  if (!/^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(url) || !key) {
+    say('setupStatus', 'Enter a valid Project URL and Publishable key.');
+    return;
+  }
+  db = createClient(url, key);
+  show('login');
+  say('setupStatus', 'Supabase client initialized. Sign in below.');
+  say('loginStatus', 'Use the email and password of your admin account.');
+};
+
+$('signIn').onclick = async () => {
+  if (!db) return say('loginStatus', 'Connect to Supabase first.');
+  const {data, error} = await db.auth.signInWithPassword({
+    email: $('email').value.trim(),
+    password: $('password').value
+  });
+  if (error) return say('loginStatus', error.message);
+
+  const {data: record, error: checkError} = await db
+    .from('admin_users').select('user_id')
+    .eq('user_id', data.user.id).maybeSingle();
+
+  if (checkError || !record) {
+    await db.auth.signOut();
+    return say('loginStatus', 'This account is not authorized as an admin. Check admin_users and its policy.');
+  }
+
+  admin = data.user;
+  say('loginStatus', 'Signed in as ' + admin.email);
+  show('signOut');
+  show('editor');
+  show('catalog');
+  await loadProducts();
+};
+
+$('signOut').onclick = async () => {
+  if (db) await db.auth.signOut();
+  admin = null;
+  show('editor', false);
+  show('catalog', false);
+  show('signOut', false);
+  say('loginStatus', 'Signed out.');
+};
+
+$('productForm').onsubmit = async event => {
+  event.preventDefault();
+  if (!db || !admin) return say('productStatus', 'Please sign in first.');
+  say('productStatus', 'Saving product…');
+
+  try {
+    const id = $('productId').value;
+    let images = [];
+
+    if (id) {
+      const {data, error} = await db.from('products')
+        .select('images').eq('id', id).single();
+      if (error) throw error;
+      images = data.images || [];
+    }
+
+    for (const file of $('photos').files) {
+      if (file.size > 8 * 1024 * 1024) throw new Error(file.name + ' exceeds 8 MB.');
+      if (!['image/jpeg','image/png','image/webp'].includes(file.type))
+        throw new Error('Use JPG, PNG or WebP images only.');
+
+      const path = Date.now() + '-' + crypto.randomUUID() +
+        '-' + file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+
+      const {error} = await db.storage.from('novair-products')
+        .upload(path, file, {contentType:file.type, upsert:false});
+      if (error) throw error;
+
+      const {data} = db.storage.from('novair-products').getPublicUrl(path);
+      images.push(data.publicUrl);
+    }
+
+    const rawPrice = $('price').value;
+    const product = {
+      name: $('name').value.trim(),
+      description: $('description').value.trim(),
+      price: rawPrice === '' ? null : Number(rawPrice),
+      bundle_text: $('bundle').value.trim(),
+      images,
+      is_active: $('active').checked
+    };
+
+    const result = id
+      ? await db.from('products').update(product).eq('id', id)
+      : await db.from('products').insert(product);
+
+    if (result.error) throw result.error;
+
+    say('productStatus', 'Product saved successfully!');
+    resetForm();
+    await loadProducts();
+  } catch (error) {
+    say('productStatus', 'Could not save product: ' + error.message);
+  }
+};
+
+function resetForm() {
+  $('productForm').reset();
+  $('productId').value = '';
+  $('active').checked = true;
+  $('editorTitle').textContent = 'Add a Product';
+  $('save').textContent = 'Save Product';
+  show('cancel', false);
+}
+
+$('cancel').onclick = resetForm;
+$('refresh').onclick = loadProducts;
+
+async function loadProducts() {
+  if (!db || !admin) return;
+  const {data, error} = await db.from('products')
+    .select('*').order('created_at', {ascending:false});
+
+  if (error) return say('productStatus', 'Could not load products: ' + error.message);
+
+  const list = $('list');
+  list.replaceChildren();
+
+  for (const p of data || []) {
+    const card = document.createElement('article');
+    card.className = 'product';
+
+    const img = document.createElement('img');
+    img.src = (p.images || [])[0] || '';
+    img.alt = p.name;
+
+    const title = document.createElement('h3');
+    title.textContent = p.name;
+
+    const details = document.createElement('p');
+    details.className = 'muted';
+    details.textContent = (p.price == null ? 'Price not set' : p.price + ' QAR')
+      + ' · ' + (p.bundle_text || 'No offer')
+      + ' · ' + (p.is_active ? 'Visible' : 'Hidden');
+
+    const edit = document.createElement('button');
+    edit.className = 'secondary';
+    edit.textContent = 'Edit';
+    edit.onclick = () => {
+      $('productId').value = p.id;
+      $('name').value = p.name || '';
+      $('price').value = p.price ?? '';
+      $('bundle').value = p.bundle_text || '';
+      $('description').value = p.description || '';
+      $('active').checked = !!p.is_active;
+      $('editorTitle').textContent = 'Edit Product';
+      $('save').textContent = 'Update Product';
+      show('cancel', true);
+      window.scrollTo({top:0, behavior:'smooth'});
+    };
+
+    const del = document.createElement('button');
+    del.className = 'danger';
+    del.textContent = 'Delete';
+    del.onclick = async () => {
+      if (!confirm('Delete product "' + p.name + '"?')) return;
+      const {error} = await db.from('products').delete().eq('id', p.id);
+      if (error) alert(error.message);
+      else await loadProducts();
+    };
+
+    card.append(img, title, details, edit, del);
+    list.append(card);
+  }
+
+  if (!(data || []).length) list.textContent = 'No products yet.';
+}
+</script>
+</body>
+</html>
