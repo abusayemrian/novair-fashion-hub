@@ -104,7 +104,13 @@ $('connect').onclick = async () => {
     say('setupStatus', 'Enter a valid Project URL and Publishable key.');
     return;
   }
-  db = createClient(url, key);
+  db = createClient(url, key, {
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+    detectSessionInUrl: true
+  }
+});
   show('login');
   say('setupStatus', 'Supabase client initialized. Sign in below.');
   say('loginStatus', 'Use the email and password of your admin account.');
