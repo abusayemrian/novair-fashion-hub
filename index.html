@@ -75,6 +75,32 @@
     .product-visual.catalog-photo img{display:block;width:100%;height:100%;aspect-ratio:4/5;object-fit:cover;object-position:center}
     .product-visual.catalog-photo .tag{z-index:1}
 
+
+    .clickable-product{cursor:pointer}
+    .product-title-link{padding:0;border:0;background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer}
+    .product-title-link:hover{text-decoration:underline;text-decoration-color:var(--gold);text-underline-offset:4px}
+    .product-details-page{max-width:1240px;margin:0 auto;padding:34px 24px 76px;min-height:55vh}
+    .detail-topline{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:28px;border-bottom:1px solid var(--line);padding-bottom:16px}
+    .back-to-shop{border:1px solid var(--gold);background:transparent;color:var(--text);padding:10px 14px;cursor:pointer;font-size:11px;letter-spacing:.8px}
+    .detail-layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(300px,.95fr);gap:clamp(24px,5vw,68px);align-items:start}
+    .detail-main-image-wrap{background:#e0d5c5;border:1px solid var(--line);overflow:hidden;aspect-ratio:4/5;display:flex;align-items:center;justify-content:center}
+    .detail-main-image{width:100%;height:100%;object-fit:contain;display:block}
+    .detail-thumbnails{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .detail-thumb{width:76px;height:92px;padding:0;border:1px solid var(--line);background:#e0d5c5;cursor:pointer;overflow:hidden}
+    .detail-thumb.active{border:2px solid var(--gold)}
+    .detail-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+    .detail-copy{padding:10px 0}
+    .detail-copy h1{font:clamp(34px,4vw,52px) Georgia,serif;font-weight:400;line-height:1.05;margin:14px 0}
+    .detail-price{font:28px Georgia,serif;color:var(--gold);margin:16px 0}
+    .detail-description{color:var(--muted);font-size:14px;line-height:1.8}
+    .detail-offer{display:inline-block;background:#dfd1bc;border:1px solid #c4ad8c;color:#3d2e1e;padding:10px 13px;margin:8px 0 22px;font-size:12px;letter-spacing:.6px}
+    .detail-selectors{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0}
+    .detail-selectors .form-field:last-child{grid-column:1/-1;max-width:140px}
+    .detail-selectors input,.detail-selectors select{width:100%;background:#f7f1e8;border:1px solid #c7b9a5;color:var(--text);padding:12px;font:13px Arial,sans-serif;border-radius:0}
+    .detail-order-button{width:100%;justify-content:center;margin-top:8px}
+    .detail-small-note{color:var(--muted);font-size:11px;line-height:1.7}
+    @media(max-width:760px){.detail-layout{grid-template-columns:1fr}.detail-main-image-wrap{max-height:650px}.detail-copy{padding-top:8px}.detail-topline{align-items:flex-start;flex-direction:column}.product-details-page{padding:24px 18px 54px}}
+
     @media(max-width:800px){.hero{grid-template-columns:1fr;padding-top:42px}.hero-art{min-height:360px}.products{grid-template-columns:repeat(2,1fr)}.links{gap:12px}.links a{font-size:10px}.section-head{align-items:start;flex-direction:column}.offer{align-items:start;flex-direction:column}}
     @media(max-width:480px){.nav{padding:15px}.brand{font-size:16px}.links{display:none}.hero{padding:40px 18px 48px;gap:25px}.hero-art{min-height:300px}.section{padding:38px 18px}.products{gap:10px}.product-visual{height:200px}.product-photo{height:230px}.product-info{padding:12px}.product-info h3{font-size:16px}.product-bottom{align-items:start;flex-direction:column}.order{width:100%}.offer{margin:20px 18px 45px;padding:25px}.benefits{grid-template-columns:1fr}}
   </style>
@@ -105,24 +131,24 @@
       <div class="section-head"><div><div class="eyebrow">Curated for you</div><h2>Featured collection</h2></div><p>Shop selected styles and value bundles. Prices are shown in Qatari Riyals (QAR).</p></div>
       <div class="products">
         <article class="product">
-          <img class="product-photo" src="palazzo-4pcs-59qar.png" alt="Ladies Palazzo 4 pieces bundle offer for 59 QAR" loading="lazy">
-          <div class="product-info"><h3>Ladies Palazzo</h3><p>4-piece bundle · Available colours shown in the product image</p><div class="product-bottom"><span class="price">59 QAR</span><button class="order" onclick="openOrderForm('Ladies Palazzo — 4 PCS Bundle — 59 QAR')">ORDER VIA WHATSAPP ↗</button></div></div>
+          <img class="product-photo clickable-product" onclick="openProductDetails('palazzo')" src="palazzo-4pcs-59qar.png" alt="Ladies Palazzo 4 pieces bundle offer for 59 QAR" loading="lazy">
+          <div class="product-info"><h3><button class="product-title-link" type="button" onclick="openProductDetails('palazzo')">Ladies Palazzo</button></h3><p>4-piece bundle · Available colours shown in the product image</p><div class="product-bottom"><span class="price">59 QAR</span><button class="order" onclick="openOrderForm('Ladies Palazzo — 4 PCS Bundle — 59 QAR')">ORDER VIA WHATSAPP ↗</button></div></div>
         </article>
         <article class="product">
-          <img class="product-photo" src="ladies-camisole-12pcs-69qar.png" alt="Ladies camisole 12 pieces bundle for 69 QAR" loading="lazy">
-          <div class="product-info"><h3>Ladies Camisole</h3><p>12-piece bundle · Multiple colours shown</p><div class="product-bottom"><span class="price">69 QAR</span><button class="order" onclick="openOrderForm('Ladies Camisole — 12 PCS Bundle — 69 QAR')">ORDER VIA WHATSAPP ↗</button></div></div>
+          <img class="product-photo clickable-product" onclick="openProductDetails('camisole')" src="ladies-camisole-12pcs-69qar.png" alt="Ladies camisole 12 pieces bundle for 69 QAR" loading="lazy">
+          <div class="product-info"><h3><button class="product-title-link" type="button" onclick="openProductDetails('camisole')">Ladies Camisole</button></h3><p>12-piece bundle · Multiple colours shown</p><div class="product-bottom"><span class="price">69 QAR</span><button class="order" onclick="openOrderForm('Ladies Camisole — 12 PCS Bundle — 69 QAR')">ORDER VIA WHATSAPP ↗</button></div></div>
         </article>
         <article class="product">
-          <img class="product-photo" src="blanket-3pcs-99qar.png" alt="Blanket 3 pieces bundle for 99 QAR" loading="lazy">
-          <div class="product-info"><h3>Blanket Bundle</h3><p>3-piece bundle · Assorted patterns</p><div class="product-bottom"><span class="price">99 QAR</span><button class="order" onclick="openOrderForm('Blanket — 3 PCS Bundle — 99 QAR')">ORDER VIA WHATSAPP ↗</button></div></div>
+          <img class="product-photo clickable-product" onclick="openProductDetails('blanket')" src="blanket-3pcs-99qar.png" alt="Blanket 3 pieces bundle for 99 QAR" loading="lazy">
+          <div class="product-info"><h3><button class="product-title-link" type="button" onclick="openProductDetails('blanket')">Blanket Bundle</button></h3><p>3-piece bundle · Assorted patterns</p><div class="product-bottom"><span class="price">99 QAR</span><button class="order" onclick="openOrderForm('Blanket — 3 PCS Bundle — 99 QAR')">ORDER VIA WHATSAPP ↗</button></div></div>
         </article>
         <article class="product">
-          <img class="product-photo" src="socks-36pcs-bundle.png" alt="Premium socks 36 pieces bundle" loading="lazy">
-          <div class="product-info"><h3>Premium Socks</h3><p>36-piece bundle · Assorted styles shown</p><div class="product-bottom"><span class="price">Price on request</span><button class="order" onclick="openOrderForm('Premium Socks — 36 PCS Bundle — price on request')">ORDER VIA WHATSAPP ↗</button></div></div>
+          <img class="product-photo clickable-product" onclick="openProductDetails('socks')" src="socks-36pcs-bundle.png" alt="Premium socks 36 pieces bundle" loading="lazy">
+          <div class="product-info"><h3><button class="product-title-link" type="button" onclick="openProductDetails('socks')">Premium Socks</button></h3><p>36-piece bundle · Assorted styles shown</p><div class="product-bottom"><span class="price">Price on request</span><button class="order" onclick="openOrderForm('Premium Socks — 36 PCS Bundle — price on request')">ORDER VIA WHATSAPP ↗</button></div></div>
         </article>
         <article class="product">
-          <img class="product-photo" src="mens-cargo-pants.png" alt="Men's cargo pants collection in four colours" loading="lazy">
-          <div class="product-info"><h3>Men's Cargo Pants</h3><p>4 colours shown · Black, navy, olive and khaki</p><div class="product-bottom"><span class="price">Price on request</span><button class="order" onclick="openOrderForm('Men’s Cargo Pants — price on request')">ORDER VIA WHATSAPP ↗</button></div></div>
+          <img class="product-photo clickable-product" onclick="openProductDetails('cargo')" src="mens-cargo-pants.png" alt="Men's cargo pants collection in four colours" loading="lazy">
+          <div class="product-info"><h3><button class="product-title-link" type="button" onclick="openProductDetails('cargo')">Men's Cargo Pants</button></h3><p>4 colours shown · Black, navy, olive and khaki</p><div class="product-bottom"><span class="price">Price on request</span><button class="order" onclick="openOrderForm('Men’s Cargo Pants — price on request')">ORDER VIA WHATSAPP ↗</button></div></div>
         </article>
       </div>
       <p class="note">Product photos are provided by NOVAIR FASHION HUB. Prices marked “Price on request” can be added once confirmed.</p>
@@ -136,6 +162,31 @@
       <div class="benefits"><div class="benefit"><strong>Curated style</strong><p>Easy-to-wear pieces selected with care.</p></div><div class="benefit"><strong>Qatar delivery</strong><p>Ask us about delivery options and timing.</p></div><div class="benefit"><strong>Personal service</strong><p>Get help with sizes, colours and orders.</p></div></div>
     </section>
   </main>
+
+
+  <section id="productDetails" class="product-details-page" hidden aria-live="polite">
+    <div class="detail-topline"><button type="button" class="back-to-shop" onclick="closeProductDetails()">← Back to collection</button><span class="eyebrow">NOVAIR PRODUCT DETAILS</span></div>
+    <div class="detail-layout">
+      <div class="detail-gallery">
+        <div class="detail-main-image-wrap"><img id="detailMainImage" class="detail-main-image" src="" alt=""></div>
+        <div id="detailThumbnails" class="detail-thumbnails" aria-label="Product photos"></div>
+      </div>
+      <div class="detail-copy">
+        <div class="eyebrow" id="detailCategory">CURATED FOR YOU</div>
+        <h1 id="detailName">Product name</h1>
+        <div class="detail-price" id="detailPrice"></div>
+        <p id="detailDescription" class="detail-description"></p>
+        <div class="detail-offer" id="detailOffer"></div>
+        <div class="detail-selectors">
+          <div class="form-field"><label for="detailSize">Size</label><select id="detailSize"><option value="Not specified">Choose size</option><option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>One size</option></select></div>
+          <div class="form-field"><label for="detailColor">Colour</label><input id="detailColor" placeholder="Enter preferred colour"></div>
+          <div class="form-field"><label for="detailQuantity">Quantity</label><input id="detailQuantity" type="number" min="1" max="99" value="1"></div>
+        </div>
+        <button type="button" class="btn gold detail-order-button" id="detailOrderButton">Order via WhatsApp ↗</button>
+        <p class="detail-small-note">Your order details will open in WhatsApp. Review the message and press Send to contact NOVAIR.</p>
+      </div>
+    </div>
+  </section>
 
   <div class="modal-backdrop" id="orderBackdrop" role="dialog" aria-modal="true" aria-labelledby="orderTitle">
     <div class="order-modal">
@@ -180,11 +231,75 @@
     </div>
   </div>
 
-  <footer><div class="brand"><img class="brand-logo" src="novair-logo.png" alt="NOVAIR Fashion Hub logo" style="margin:0 auto;width:160px"></div><div>Modern fashion · Qatar</div><p>© <span id="year"></span> NOVAIR FASHION HUB. All rights reserved.</p><p class="note">Before launch: add your real product photos, prices and WhatsApp number.</p></footer>
+  <footer><div class="brand"><img class="brand-logo" src="novair-logo.png" alt="NOVAIR Fashion Hub logo" style="margin:0 auto;width:160px"></div><div>Modern fashion · Qatar</div><p>© <span id="year"></span> NOVAIR FASHION HUB. All rights reserved.</p><p class="note">Product details and photo galleries · WhatsApp orders across Qatar.</p></footer>
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
     // Qatar WhatsApp number in international format, digits only (no + or spaces).
     const WHATSAPP_NUMBER = '97455062591';
+
+    // Product catalogue. To add more photos to a product, put each image file beside index.html,
+    // then add its exact filename to that product's images array below.
+    const PRODUCTS = {
+      palazzo: {name:'Ladies Palazzo', category:'WOMEN’S FASHION', price:'59 QAR', offer:'4 PCS BUNDLE · 59 QAR', description:'Ladies palazzo bundle with multiple colours shown in the supplied NOVAIR product image. Choose your preferred colour and order through WhatsApp.', images:['palazzo-4pcs-59qar.png']},
+      camisole: {name:'Ladies Camisole', category:'WOMEN’S FASHION', price:'69 QAR', offer:'12 PCS BUNDLE · 69 QAR', description:'Ladies camisole bundle with multiple colours shown in the supplied NOVAIR product image.', images:['ladies-camisole-12pcs-69qar.png']},
+      blanket: {name:'Blanket Bundle', category:'HOME & COMFORT', price:'99 QAR', offer:'3 PCS BUNDLE · 99 QAR', description:'A bundle of three blankets. Patterns and colours are shown in the supplied product image.', images:['blanket-3pcs-99qar.png']},
+      socks: {name:'Premium Socks', category:'EVERYDAY ESSENTIALS', price:'Price on request', offer:'36 PCS BUNDLE', description:'Premium socks bundle with assorted styles shown. Please ask us to confirm the price before ordering.', images:['socks-36pcs-bundle.png']},
+      cargo: {name:"Men's Cargo Pants", category:'MEN’S FASHION', price:'Price on request', offer:'4 COLOURS SHOWN', description:'Men’s cargo pants shown in black, navy, olive green and khaki. Please ask us to confirm price and available sizes.', images:['mens-cargo-pants.png']}
+    };
+    let currentDetailProduct = null;
+    function openProductDetails(productId, pushHistory=true) {
+      const product = PRODUCTS[productId];
+      if (!product) return;
+      currentDetailProduct = productId;
+      document.querySelector('main').hidden = true;
+      document.getElementById('productDetails').hidden = false;
+      document.getElementById('detailName').textContent = product.name;
+      document.getElementById('detailCategory').textContent = product.category;
+      document.getElementById('detailPrice').textContent = product.price;
+      document.getElementById('detailDescription').textContent = product.description;
+      document.getElementById('detailOffer').textContent = product.offer;
+      document.getElementById('detailQuantity').value = '1';
+      document.getElementById('detailSize').value = 'Not specified';
+      document.getElementById('detailColor').value = '';
+      const mainImage = document.getElementById('detailMainImage');
+      const thumbs = document.getElementById('detailThumbnails');
+      thumbs.innerHTML = '';
+      function chooseImage(filename, button) {
+        mainImage.src = filename;
+        mainImage.alt = product.name;
+        thumbs.querySelectorAll('.detail-thumb').forEach(el => el.classList.toggle('active', el === button));
+      }
+      product.images.forEach((filename, index) => {
+        const button = document.createElement('button');
+        button.type = 'button'; button.className = 'detail-thumb' + (index === 0 ? ' active' : '');
+        button.setAttribute('aria-label', 'View product photo ' + (index + 1));
+        const image = document.createElement('img'); image.src = filename; image.alt = product.name + ' photo ' + (index + 1);
+        button.appendChild(image); button.addEventListener('click', () => chooseImage(filename, button));
+        thumbs.appendChild(button);
+      });
+      if (product.images.length) mainImage.src = product.images[0];
+      document.getElementById('detailOrderButton').onclick = function() {
+        const size = document.getElementById('detailSize').value;
+        const color = document.getElementById('detailColor').value.trim();
+        const quantity = document.getElementById('detailQuantity').value || '1';
+        openOrderForm(product.name + ' — ' + product.offer + ' — Size: ' + size + ' — Colour: ' + (color || 'Not specified') + ' — Quantity: ' + quantity);
+      };
+      if (pushHistory) history.pushState({productId}, '', '#product-' + productId);
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+    function closeProductDetails(fromPopState=false) {
+      document.getElementById('productDetails').hidden = true;
+      document.querySelector('main').hidden = false;
+      currentDetailProduct = null;
+      if (!fromPopState && location.hash.startsWith('#product-')) history.pushState({}, '', location.pathname + location.search + '#collection');
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+    window.addEventListener('popstate', function() {
+      const match = location.hash.match(/^#product-(palazzo|camisole|blanket|socks|cargo)$/);
+      if (match) openProductDetails(match[1], false);
+      else if (currentDetailProduct) closeProductDetails(true);
+    });
+
     const orderBackdrop = document.getElementById('orderBackdrop');
     const orderForm = document.getElementById('orderForm');
 
