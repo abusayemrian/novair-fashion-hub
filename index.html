@@ -150,6 +150,22 @@
           <img class="product-photo clickable-product" onclick="openProductDetails('cargo')" src="mens-cargo-pants.png" alt="Men's cargo pants collection in four colours" loading="lazy">
           <div class="product-info"><h3><button class="product-title-link" type="button" onclick="openProductDetails('cargo')">Men's Cargo Pants</button></h3><p>4 colours shown · Black, navy, olive and khaki</p><div class="product-bottom"><span class="price">Price on request</span><button class="order" onclick="openOrderForm('Men’s Cargo Pants — price on request')">ORDER VIA WHATSAPP ↗</button></div></div>
         </article>
+        <article class="product">
+          <img class="product-photo clickable-product" onclick="openProductDetails('newPalazzo')" src="Novair Palazzo Pants Fashion Ad.png" alt="NOVAIR Ladies Palazzo Pants 4 pieces bundle for 59 QAR" loading="lazy">
+          <div class="product-info"><h3><button class="product-title-link" type="button" onclick="openProductDetails('newPalazzo')">Ladies Palazzo Pants</button></h3><p>4-piece bundle · Rose pink, sage green, beige and black</p><div class="product-bottom"><span class="price">59 QAR</span><button class="order" onclick="openOrderForm('Ladies Palazzo Pants — 4 PCS Bundle — 59 QAR')">ORDER VIA WHATSAPP ↗</button></div></div>
+        </article>
+        <article class="product">
+          <img class="product-photo clickable-product" onclick="openProductDetails('braSet')" src="NOVAIR Luxury Teal Bra Set Ad.png" alt="NOVAIR ladies bra set 4 pieces bundle for 59 QAR" loading="lazy">
+          <div class="product-info"><h3><button class="product-title-link" type="button" onclick="openProductDetails('braSet')">Ladies Bra Set</button></h3><p>4-piece bundle · Teal, pink, red, black, light pink and beige</p><div class="product-bottom"><span class="price">59 QAR</span><button class="order" onclick="openOrderForm('Ladies Bra Set — 4 PCS Bundle — 59 QAR')">ORDER VIA WHATSAPP ↗</button></div></div>
+        </article>
+        <article class="product">
+          <img class="product-photo clickable-product" onclick="openProductDetails('denimJacket')" src="Novair Denim Jacket Collection.png" alt="NOVAIR denim jacket collection in four colours" loading="lazy">
+          <div class="product-info"><h3><button class="product-title-link" type="button" onclick="openProductDetails('denimJacket')">Denim Jacket</button></h3><p>2-piece bundle · Black, dark blue, light blue and white</p><div class="product-bottom"><span class="price">Price on request</span><button class="order" onclick="openOrderForm('Denim Jacket — 2 PCS Bundle — price on request')">ORDER VIA WHATSAPP ↗</button></div></div>
+        </article>
+        <article class="product">
+          <img class="product-photo clickable-product" onclick="openProductDetails('hoodie')" src="NOVAIR Hoodie Boutique Collection.png" alt="NOVAIR hoodie collection 2 pieces bundle for 59 QAR" loading="lazy">
+          <div class="product-info"><h3><button class="product-title-link" type="button" onclick="openProductDetails('hoodie')">Hoodie Collection</button></h3><p>2-piece bundle · Multiple colours shown</p><div class="product-bottom"><span class="price">59 QAR</span><button class="order" onclick="openOrderForm('Hoodie Collection — 2 PCS Bundle — 59 QAR')">ORDER VIA WHATSAPP ↗</button></div></div>
+        </article>
       </div>
       <p class="note">Product photos are provided by NOVAIR FASHION HUB. Prices marked “Price on request” can be added once confirmed.</p>
     </section>
@@ -244,7 +260,11 @@
       camisole: {name:'Ladies Camisole', category:'WOMEN’S FASHION', price:'69 QAR', offer:'12 PCS BUNDLE · 69 QAR', description:'Ladies camisole bundle with multiple colours shown in the supplied NOVAIR product image.', images:['ladies-camisole-12pcs-69qar.png']},
       blanket: {name:'Blanket Bundle', category:'HOME & COMFORT', price:'99 QAR', offer:'3 PCS BUNDLE · 99 QAR', description:'A bundle of three blankets. Patterns and colours are shown in the supplied product image.', images:['blanket-3pcs-99qar.png']},
       socks: {name:'Premium Socks', category:'EVERYDAY ESSENTIALS', price:'Price on request', offer:'36 PCS BUNDLE', description:'Premium socks bundle with assorted styles shown. Please ask us to confirm the price before ordering.', images:['socks-36pcs-bundle.png']},
-      cargo: {name:"Men's Cargo Pants", category:'MEN’S FASHION', price:'Price on request', offer:'4 COLOURS SHOWN', description:'Men’s cargo pants shown in black, navy, olive green and khaki. Please ask us to confirm price and available sizes.', images:['mens-cargo-pants.png']}
+      cargo: {name:"Men's Cargo Pants", category:'MEN’S FASHION', price:'Price on request', offer:'4 COLOURS SHOWN', description:'Men’s cargo pants shown in black, navy, olive green and khaki. Please ask us to confirm price and available sizes.', images:['mens-cargo-pants.png']},
+      newPalazzo: {name:'Ladies Palazzo Pants', category:'WOMEN’S FASHION', price:'59 QAR', offer:'4 PCS BUNDLE · 59 QAR', description:'Ladies palazzo pants with a comfortable wide-leg silhouette, elasticated waist and drawstring. Colours shown: rose pink, sage green, beige and black. Bundle includes 4 pieces for 59 QAR.', images:['Novair Palazzo Pants Fashion Ad.png']},
+      braSet: {name:'Ladies Bra Set', category:'WOMEN’S FASHION', price:'59 QAR', offer:'4 PCS BUNDLE · 59 QAR', description:'Ladies bra set bundle. Colour options shown in the supplied NOVAIR image include teal, pink, red, black, light pink and beige. Bundle includes 4 pieces for 59 QAR.', images:['NOVAIR Luxury Teal Bra Set Ad.png']},
+      denimJacket: {name:'Denim Jacket', category:'DENIM COLLECTION', price:'Price on request', offer:'2 PCS BUNDLE', description:'Denim jacket collection with four colour options shown: black, dark blue, light blue and white. Bundle includes 2 pieces. Please contact us on WhatsApp to confirm the price and available sizes.', images:['Novair Denim Jacket Collection.png']},
+      hoodie: {name:'Hoodie Collection', category:'CASUAL FASHION', price:'59 QAR', offer:'2 PCS BUNDLE · 59 QAR', description:'Hoodie collection with assorted colour options shown in the supplied NOVAIR image, including dark and light neutral tones alongside blue, green, pink and brown shades. Bundle includes 2 pieces for 59 QAR.', images:['NOVAIR Hoodie Boutique Collection.png']}
     };
     let currentDetailProduct = null;
     function openProductDetails(productId, pushHistory=true) {
@@ -295,7 +315,7 @@
       window.scrollTo({top:0,behavior:'smooth'});
     }
     window.addEventListener('popstate', function() {
-      const match = location.hash.match(/^#product-(palazzo|camisole|blanket|socks|cargo)$/);
+      const match = location.hash.match(/^#product-(palazzo|camisole|blanket|socks|cargo|newPalazzo|braSet|denimJacket|hoodie)$/);
       if (match) openProductDetails(match[1], false);
       else if (currentDetailProduct) closeProductDetails(true);
     });
