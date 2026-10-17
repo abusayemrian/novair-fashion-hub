@@ -38,16 +38,6 @@ button{padding:12px 16px;border:1px solid var(--gold);background:var(--gold);col
 <p class="muted">Manage your fashion products securely.</p>
 </section>
 
-<section class="card" id="setup">
-<h2>Connect Supabase</h2>
-<label>Project URL</label>
-<input id="url" placeholder="https://YOUR_PROJECT.supabase.co">
-<label>Publishable key</label>
-<input id="key" placeholder="sb_publishable_...">
-<button id="connect">Connect</button>
-<div class="status" id="setupStatus">Enter your project details.</div>
-</section>
-
 <section class="card hidden" id="login">
 <h2>Admin Login</h2>
 <label>Email</label>
@@ -94,65 +84,85 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 const $ = id => document.getElementById(id);
 const show = (id, visible=true) => $(id).classList.toggle('hidden', !visible);
 const say = (id, text) => $(id).textContent = text;
-let db = null;
-let admin = null;
 
-$('connect').onclick = async () => {
-  const url = $('url').value.trim().replace(/\/+$/, '');
-  const key = $('key').value.trim();
-  if (!/^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(url) || !key) {
-    say('setupStatus', 'Enter a valid Project URL and Publishable key.');
-    return;
-  }
-  db = createClient(url, key, {
+// Public browser credentials for this Supabase project.
+const SUPABASE_URL = 'https://chyxrwedfrilzmfdked.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_Q_U0UohaUBOytfnboXQ-Cg_Yj9R6dgt';
+
+const db = createClient(SUPABASE_URL, SUPABASE_KEY, {
   auth: {
     persistSession: true,
     autoRefreshToken: true,
     detectSessionInUrl: true
   }
 });
+let admin = null;
+
+function showAdmin(user) {
+  admin = user;
+  say('loginStatus', 'Signed in as ' + (admin.email || 'admin'));
   show('login');
-  say('setupStatus', 'Supabase client initialized. Sign in below.');
-  say('loginStatus', 'Use the email and password of your admin account.');
-};
-
-$('signIn').onclick = async () => {
-  if (!db) return say('loginStatus', 'Connect to Supabase first.');
-  const {data, error} = await db.auth.signInWithPassword({
-    email: $('email').value.trim(),
-    password: $('password').value
-  });
-  if (error) return say('loginStatus', error.message);
-
-  const {data: record, error: checkError} = await db
-    .from('admin_users').select('user_id')
-    .eq('user_id', data.user.id).maybeSingle();
-
-  if (checkError || !record) {
-    await db.auth.signOut();
-    return say('loginStatus', 'This account is not authorized as an admin. Check admin_users and its policy.');
-  }
-
-  admin = data.user;
-  say('loginStatus', 'Signed in as ' + admin.email);
   show('signOut');
   show('editor');
   show('catalog');
-  await loadProducts();
+  loadProducts();
+}
+
+async function checkAdmin(user) {
+  const {data: record, error} = await db
+    .from('admin_users').select('user_id')
+    .eq('user_id', user.id).maybeSingle();
+
+  if (error || !record) {
+    await db.auth.signOut();
+    admin = null;
+    show('editor', false);
+    show('catalog', false);
+    show('signOut', false);
+    show('login', true);
+    say('loginStatus', error
+      ? 'Could not verify admin access: ' + error.message
+      : 'This account is not authorized as an admin.');
+    return;
+  }
+  showAdmin(user);
+}
+
+// Show login immediately, then restore an existing Supabase session after refresh.
+show('login', true);
+say('loginStatus', 'Checking saved admin session…');
+const {data: sessionData, error: sessionError} = await db.auth.getSession();
+if (sessionError) {
+  say('loginStatus', 'Could not restore session: ' + sessionError.message);
+} else if (sessionData.session?.user) {
+  await checkAdmin(sessionData.session.user);
+} else {
+  say('loginStatus', 'Sign in with your admin email and password.');
+}
+
+$('signIn').onclick = async () => {
+  const email = $('email').value.trim();
+  const password = $('password').value;
+  if (!email || !password) return say('loginStatus', 'Enter your admin email and password.');
+  say('loginStatus', 'Signing in…');
+  const {data, error} = await db.auth.signInWithPassword({email, password});
+  if (error) return say('loginStatus', error.message);
+  await checkAdmin(data.user);
 };
 
 $('signOut').onclick = async () => {
-  if (db) await db.auth.signOut();
+  await db.auth.signOut();
   admin = null;
   show('editor', false);
   show('catalog', false);
   show('signOut', false);
+  show('login', true);
   say('loginStatus', 'Signed out.');
 };
 
 $('productForm').onsubmit = async event => {
   event.preventDefault();
-  if (!db || !admin) return say('productStatus', 'Please sign in first.');
+  if (!admin) return say('productStatus', 'Please sign in first.');
   say('productStatus', 'Saving product…');
 
   try {
@@ -219,7 +229,7 @@ $('cancel').onclick = resetForm;
 $('refresh').onclick = loadProducts;
 
 async function loadProducts() {
-  if (!db || !admin) return;
+  if (!admin) return;
   const {data, error} = await db.from('products')
     .select('*').order('created_at', {ascending:false});
 
