@@ -71,6 +71,11 @@
     @media(max-width:480px){.order-modal{padding:19px}.order-form{grid-template-columns:1fr}.form-field.full,.submit-order{grid-column:auto}.modal-top h2{font-size:26px}}
 
 
+    .category-filters{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 24px}
+    .category-filter{border:1px solid var(--gold);background:transparent;color:var(--text);padding:10px 15px;font-size:10px;letter-spacing:.8px;text-transform:uppercase;cursor:pointer;transition:.2s}
+    .category-filter:hover,.category-filter.active{background:var(--gold);color:#171511}
+    .category-empty{grid-column:1/-1;padding:28px;text-align:center;color:var(--muted);border:1px dashed var(--line)}
+    @media(max-width:480px){.category-filters{gap:7px}.category-filter{padding:9px 10px;font-size:9px}}
     .product-visual.catalog-photo{height:auto;aspect-ratio:4/5;background:#e9e1d5;display:block;overflow:hidden}
     .product-visual.catalog-photo:before{content:none}
     .product-visual.catalog-photo img{display:block;width:100%;height:100%;aspect-ratio:4/5;object-fit:cover;object-position:center}
@@ -130,40 +135,43 @@
     </section>
     <section class="section" id="collection">
       <div class="section-head"><div><div class="eyebrow">Curated for you</div><h2>Featured collection</h2></div><p>Shop selected styles and value bundles. Prices are shown in Qatari Riyals (QAR).</p></div>
+      <div class="category-filters" id="categoryFilters" aria-label="Filter products by category">
+        <button type="button" class="category-filter active" data-category="all" aria-pressed="true">All Products</button>
+      </div>
       <div class="products" id="productGrid">
-        <article class="product">
+        <article class="product" data-category="WOMEN’S FASHION">
           <img class="product-photo clickable-product" onclick="openProductDetails('palazzo')" src="palazzo-4pcs-59qar.png" alt="Ladies Palazzo 4 pieces bundle offer for 59 QAR" loading="lazy">
           <div class="product-info"><h3><button class="product-title-link" type="button" onclick="openProductDetails('palazzo')">Ladies Palazzo</button></h3><p>4-piece bundle · Available colours shown in the product image</p><div class="product-bottom"><span class="price">59 QAR</span><button class="order" onclick="openOrderForm('palazzo')">ORDER VIA WHATSAPP ↗</button></div></div>
         </article>
-        <article class="product">
+        <article class="product" data-category="WOMEN’S FASHION">
           <img class="product-photo clickable-product" onclick="openProductDetails('camisole')" src="ladies-camisole-12pcs-69qar.png" alt="Ladies camisole 12 pieces bundle for 69 QAR" loading="lazy">
           <div class="product-info"><h3><button class="product-title-link" type="button" onclick="openProductDetails('camisole')">Ladies Camisole</button></h3><p>12-piece bundle · Multiple colours shown</p><div class="product-bottom"><span class="price">69 QAR</span><button class="order" onclick="openOrderForm('camisole')">ORDER VIA WHATSAPP ↗</button></div></div>
         </article>
-        <article class="product">
+        <article class="product" data-category="HOME & COMFORT">
           <img class="product-photo clickable-product" onclick="openProductDetails('blanket')" src="blanket-3pcs-99qar.png" alt="Blanket 3 pieces bundle for 99 QAR" loading="lazy">
           <div class="product-info"><h3><button class="product-title-link" type="button" onclick="openProductDetails('blanket')">Blanket Bundle</button></h3><p>3-piece bundle · Assorted patterns</p><div class="product-bottom"><span class="price">99 QAR</span><button class="order" onclick="openOrderForm('blanket')">ORDER VIA WHATSAPP ↗</button></div></div>
         </article>
-        <article class="product">
+        <article class="product" data-category="EVERYDAY ESSENTIALS">
           <img class="product-photo clickable-product" onclick="openProductDetails('socks')" src="socks-36pcs-bundle.png" alt="Premium socks 36 pieces bundle" loading="lazy">
           <div class="product-info"><h3><button class="product-title-link" type="button" onclick="openProductDetails('socks')">Premium Socks</button></h3><p>36-piece bundle · Assorted styles shown</p><div class="product-bottom"><span class="price">Price on request</span><button class="order" onclick="openOrderForm('socks')">ORDER VIA WHATSAPP ↗</button></div></div>
         </article>
-        <article class="product">
+        <article class="product" data-category="MEN’S FASHION">
           <img class="product-photo clickable-product" onclick="openProductDetails('cargo')" src="mens-cargo-pants.png" alt="Men's cargo pants collection in four colours" loading="lazy">
           <div class="product-info"><h3><button class="product-title-link" type="button" onclick="openProductDetails('cargo')">Men's Cargo Pants</button></h3><p>4 colours shown · Black, navy, olive and khaki</p><div class="product-bottom"><span class="price">Price on request</span><button class="order" onclick="openOrderForm('cargo')">ORDER VIA WHATSAPP ↗</button></div></div>
         </article>
-        <article class="product">
+        <article class="product" data-category="WOMEN’S FASHION">
           <img class="product-photo clickable-product" onclick="openProductDetails('newPalazzo')" src="Novair Palazzo Pants Fashion Ad.png" alt="NOVAIR Ladies Palazzo Pants 4 pieces bundle for 59 QAR" loading="lazy">
           <div class="product-info"><h3><button class="product-title-link" type="button" onclick="openProductDetails('newPalazzo')">Ladies Palazzo Pants</button></h3><p>4-piece bundle · Rose pink, sage green, beige and black</p><div class="product-bottom"><span class="price">59 QAR</span><button class="order" onclick="openOrderForm('newPalazzo')">ORDER VIA WHATSAPP ↗</button></div></div>
         </article>
-        <article class="product">
+        <article class="product" data-category="WOMEN’S FASHION">
           <img class="product-photo clickable-product" onclick="openProductDetails('braSet')" src="NOVAIR Luxury Teal Bra Set Ad.png" alt="NOVAIR ladies bra set 4 pieces bundle for 59 QAR" loading="lazy">
           <div class="product-info"><h3><button class="product-title-link" type="button" onclick="openProductDetails('braSet')">Ladies Bra Set</button></h3><p>4-piece bundle · Teal, pink, red, black, light pink and beige</p><div class="product-bottom"><span class="price">59 QAR</span><button class="order" onclick="openOrderForm('braSet')">ORDER VIA WHATSAPP ↗</button></div></div>
         </article>
-        <article class="product">
+        <article class="product" data-category="DENIM COLLECTION">
           <img class="product-photo clickable-product" onclick="openProductDetails('denimJacket')" src="Novair Denim Jacket Collection.png" alt="NOVAIR denim jacket collection in four colours" loading="lazy">
           <div class="product-info"><h3><button class="product-title-link" type="button" onclick="openProductDetails('denimJacket')">Denim Jacket</button></h3><p>2-piece bundle · Black, dark blue, light blue and white</p><div class="product-bottom"><span class="price">Price on request</span><button class="order" onclick="openOrderForm('denimJacket')">ORDER VIA WHATSAPP ↗</button></div></div>
         </article>
-        <article class="product">
+        <article class="product" data-category="CASUAL FASHION">
           <img class="product-photo clickable-product" onclick="openProductDetails('hoodie')" src="NOVAIR Hoodie Boutique Collection.png" alt="NOVAIR hoodie collection 2 pieces bundle for 59 QAR" loading="lazy">
           <div class="product-info"><h3><button class="product-title-link" type="button" onclick="openProductDetails('hoodie')">Hoodie Collection</button></h3><p>2-piece bundle · Multiple colours shown</p><div class="product-bottom"><span class="price">59 QAR</span><button class="order" onclick="openOrderForm('hoodie')">ORDER VIA WHATSAPP ↗</button></div></div>
         </article>
@@ -197,7 +205,6 @@
         <div class="detail-selectors">
           <div class="form-field"><label for="detailSize">Size</label><select id="detailSize"><option value="Not specified">Choose size</option><option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>One size</option></select></div>
           <div class="form-field"><label for="detailColor">Colour</label><input id="detailColor" placeholder="Enter preferred colour"></div>
-          <div class="form-field"><label for="detailQuantity">Quantity</label><input id="detailQuantity" type="number" min="1" max="99" value="1"></div>
         </div>
         <button type="button" class="btn gold detail-order-button" id="detailOrderButton">Order via WhatsApp ↗</button>
         <p class="detail-small-note">Your order details will open in WhatsApp. Review the message and press Send to contact NOVAIR.</p>
@@ -234,10 +241,6 @@
           <label for="orderColor">Colour *</label>
           <input id="orderColor" name="color" required maxlength="50" placeholder="e.g. Black">
         </div>
-        <div class="form-field">
-          <label for="orderQuantity">Quantity *</label>
-          <input id="orderQuantity" name="quantity" type="number" min="1" max="99" value="1" required>
-        </div>
         <div class="form-field full">
           <label for="deliveryAddress">Delivery address *</label>
           <textarea id="deliveryAddress" name="address" autocomplete="street-address" required maxlength="500" placeholder="Building, street, zone, city"></textarea>
@@ -248,7 +251,7 @@
     </div>
   </div>
 
-  <footer><div class="brand"><img class="brand-logo" src="novair-logo.png" alt="NOVAIR Fashion Hub logo" style="margin:0 auto;width:160px"></div><div>Modern fashion · Qatar</div><p>© <span id="year"></span> NOVAIR FASHION HUB. All rights reserved.</p><p class="note">Product details and photo galleries · WhatsApp orders across Qatar.</p></footer>
+  <footer><div class="brand"><img class="brand-logo" src="novair-logo.png" alt="NOVAIR Fashion Hub logo" style="margin:0 auto;width:160px"></div><div>Modern fashion · Qatar</div><p style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap"><a href="https://www.facebook.com/profile.php?id=61594655165925" target="_blank" rel="noopener noreferrer" aria-label="Visit NOVAIR FASHION HUB on Facebook" style="display:inline-flex;align-items:center;gap:8px;border:1px solid var(--gold);padding:10px 14px;color:#5f4829;font-size:11px;letter-spacing:.6px">Visit us on Facebook ↗</a><a href="https://wa.me/97455062591" target="_blank" rel="noopener noreferrer" aria-label="Contact NOVAIR FASHION HUB on WhatsApp" style="display:inline-flex;align-items:center;gap:8px;border:1px solid var(--gold);padding:10px 14px;color:#5f4829;font-size:11px;letter-spacing:.6px">WhatsApp: +974 5506 2591 ↗</a></p><p>© <span id="year"></span> NOVAIR FASHION HUB. All rights reserved.</p><p class="note">Product details and photo galleries · WhatsApp orders across Qatar.</p></footer>
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
     // Qatar WhatsApp number in international format, digits only (no + or spaces).
@@ -271,6 +274,71 @@
     const SUPABASE_URL = 'https://chyxrwedrfrilzmfdked.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_Q_U0UohaUBOytfnboXQ-Cg_Yj9R6dgt';
     const PRODUCT_API = SUPABASE_URL + '/rest/v1/products?select=*&is_active=eq.true&order=created_at.desc';
+    const CATEGORY_API = SUPABASE_URL + '/rest/v1/categories?select=name&order=name.asc';
+
+    function categoryKey(value) {
+      return String(value || 'OTHER PRODUCTS').trim().toLocaleLowerCase().replace(/[’‘]/g, "'");
+    }
+    function categoryLabel(value) {
+      return String(value || 'Other Products').trim().replace(/[’‘]/g, "'");
+    }
+    function rebuildCategoryFilters(databaseCategories=[]) {
+      // Keep the original storefront filter labels and order, then append any new admin categories.
+      const builtIn = [
+        {key:'all', label:'All Products'},
+        {key:categoryKey('MEN’S FASHION'), label:'Men’s Fashion'},
+        {key:categoryKey('WOMEN’S FASHION'), label:'Women’s Fashion'},
+        {key:categoryKey('DENIM COLLECTION'), label:'Denim Collection'},
+        {key:categoryKey('CASUAL FASHION'), label:'Hoodies & Casual Wear'},
+        {key:categoryKey('HOME & COMFORT'), label:'Home & Comfort'},
+        {key:categoryKey('EVERYDAY ESSENTIALS'), label:'Everyday Essentials'}
+      ];
+      const names = new Map();
+      builtIn.forEach(item => names.set(item.key, item.label));
+
+      // Include categories used by products and categories created in the Admin Panel.
+      databaseCategories.forEach(row => {
+        if (row && row.name) {
+          const key = categoryKey(row.name);
+          if (key && key !== 'all' && key !== 'other products' && !names.has(key)) {
+            names.set(key, categoryLabel(row.name));
+          }
+        }
+      });
+      document.querySelectorAll('#productGrid .product').forEach(card => {
+        const raw = card.dataset.category;
+        const key = categoryKey(raw);
+        if (key && key !== 'all' && key !== 'other products' && !names.has(key)) {
+          names.set(key, categoryLabel(raw));
+        }
+      });
+
+      const filters = document.getElementById('categoryFilters');
+      filters.replaceChildren();
+      const ordered = [builtIn[0], ...[...names.entries()].filter(([key]) => key !== 'all').map(([key,label]) => ({key,label})), {key:'other products', label:'Other Products'}];
+      ordered.forEach((item, index) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'category-filter' + (index === 0 ? ' active' : '');
+        button.dataset.category = item.key;
+        button.setAttribute('aria-pressed', index === 0 ? 'true' : 'false');
+        button.textContent = item.label;
+        filters.appendChild(button);
+      });
+      applyProductCategory(activeProductCategory || 'all');
+    }
+
+    async function loadCategories() {
+      try {
+        const response = await fetch(CATEGORY_API, {headers:{apikey:SUPABASE_KEY, Accept:'application/json'}});
+        if (!response.ok) throw new Error('Category API returned HTTP ' + response.status);
+        const categories = await response.json();
+        rebuildCategoryFilters(Array.isArray(categories) ? categories : []);
+      } catch (error) {
+        console.error('Could not load categories:', error);
+        rebuildCategoryFilters([]);
+      }
+    }
 
     function addAdminProduct(product) {
       const id = 'admin-' + String(product.id);
@@ -279,13 +347,14 @@
       const offer = product.bundle_text || 'Available now';
       PRODUCTS[id] = {
         name: product.name || 'Fashion product',
-        category: 'NOVAIR COLLECTION', price, offer,
+        category: (product.category || product.category_name || 'OTHER PRODUCTS').toString().toUpperCase(), price, offer,
         description: product.description || 'Contact us for more information about sizes, colours and availability.',
         images
       };
       const item = PRODUCTS[id];
       const article = document.createElement('article');
       article.className = 'product';
+      article.dataset.category = item.category;
       const img = document.createElement('img');
       img.className = 'product-photo clickable-product';
       img.src = images[0] || '';
@@ -317,6 +386,7 @@
       info.append(heading, description, bottom);
       article.append(img, info);
       document.getElementById('productGrid').appendChild(article);
+      if (activeProductCategory !== 'all') article.hidden = categoryKey(item.category || 'OTHER PRODUCTS') !== categoryKey(activeProductCategory);
     }
 
     async function loadAdminProducts() {
@@ -328,6 +398,7 @@
         const products = await response.json();
         if (!Array.isArray(products)) throw new Error('Unexpected product response');
         products.forEach(addAdminProduct);
+        await loadCategories();
         const match = location.hash.match(/^#product-(.+)$/);
         if (match && PRODUCTS[decodeURIComponent(match[1])]) openProductDetails(decodeURIComponent(match[1]), false);
       } catch (error) {
@@ -338,6 +409,39 @@
         document.getElementById('productGrid').after(note);
       }
     }
+    // Category filter works for the built-in catalogue and Supabase products.
+    let activeProductCategory = 'all';
+    function applyProductCategory(category) {
+      activeProductCategory = category;
+      document.querySelectorAll('#categoryFilters .category-filter').forEach(button => {
+        const active = button.dataset.category === category;
+        button.classList.toggle('active', active);
+        button.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
+      let visibleCount = 0;
+      document.querySelectorAll('#productGrid .product').forEach(card => {
+        const matches = category === 'all' || categoryKey(card.dataset.category || 'OTHER PRODUCTS') === categoryKey(category);
+        card.hidden = !matches;
+        if (matches) visibleCount++;
+      });
+      let empty = document.getElementById('categoryEmpty');
+      if (!empty) {
+        empty = document.createElement('div');
+        empty.id = 'categoryEmpty';
+        empty.className = 'category-empty';
+        empty.textContent = 'No products in this category yet.';
+        empty.hidden = true;
+        document.getElementById('productGrid').appendChild(empty);
+      }
+      empty.hidden = visibleCount !== 0;
+    }
+    document.getElementById('categoryFilters').addEventListener('click', function(event) {
+      const button = event.target.closest('button[data-category]');
+      if (button) applyProductCategory(button.dataset.category);
+    });
+
+    // Render the original category buttons immediately; Supabase categories are added after loading.
+    rebuildCategoryFilters([]);
     loadAdminProducts();
 
     let currentDetailProduct = null;
@@ -352,7 +456,6 @@
       document.getElementById('detailPrice').textContent = product.price;
       document.getElementById('detailDescription').textContent = product.description;
       document.getElementById('detailOffer').textContent = product.offer;
-      document.getElementById('detailQuantity').value = '1';
       document.getElementById('detailSize').value = 'Not specified';
       document.getElementById('detailColor').value = '';
       const mainImage = document.getElementById('detailMainImage');
@@ -376,8 +479,7 @@
       document.getElementById('detailOrderButton').onclick = function() {
         const size = document.getElementById('detailSize').value;
         const color = document.getElementById('detailColor').value.trim();
-        const quantity = document.getElementById('detailQuantity').value || '1';
-        openOrderForm(productId, {size, color, quantity});
+        openOrderForm(productId, {size, color});
       };
       if (pushHistory) history.pushState({productId}, '', '#product-' + encodeURIComponent(productId));
       window.scrollTo({top:0,behavior:'smooth'});
@@ -406,7 +508,6 @@
         ? selectedOrderProduct.name + ' — ' + selectedOrderProduct.offer + ' — ' + selectedOrderProduct.price
         : productName;
       document.getElementById('orderProduct').value = label;
-      document.getElementById('orderQuantity').value = selections.quantity || '1';
       if (selections.size && selections.size !== 'Not specified') document.getElementById('orderSize').value = selections.size;
       if (selections.color) document.getElementById('orderColor').value = selections.color;
       orderBackdrop.classList.add('open');
@@ -435,6 +536,9 @@
       const productLine = selectedOrderProduct ? selectedOrderProduct.name : String(data.get('product')).split(' — ')[0];
       const offerLine = selectedOrderProduct ? selectedOrderProduct.offer : String(data.get('product')).split(' — ').slice(1, -1).join(' — ') || 'Please confirm';
       const priceLine = selectedOrderProduct ? selectedOrderProduct.price : (String(data.get('product')).match(/(?:\d+(?:\.\d+)? QAR|price on request)/i) || ['Price on request'])[0];
+      const bundleCount = 1;
+      const bundleMatch = offerLine.match(/(\d+)\s*PCS\s+BUNDLE/i);
+      const bundleSize = bundleMatch ? Number(bundleMatch[1]) : null;
       const message = [
         '🛍️ *NEW ORDER | NOVAIR FASHION HUB*',
         '',
@@ -442,20 +546,22 @@
         '*Product:* ' + productLine,
         '*Offer:* ' + offerLine,
         '*Price:* ' + priceLine,
+        bundleSize ? '*Number of bundles:* 1' : null,
+        bundleSize ? '*Pieces per bundle:* ' + bundleSize + ' PCS' : null,
+        bundleSize ? '*Total pieces:* ' + (bundleSize * bundleCount) + ' PCS' : null,
         '',
         '👤 *CUSTOMER DETAILS*',
         '*Name:* ' + String(data.get('customerName')).trim(),
         '*Phone:* ' + String(data.get('customerPhone')).trim(),
         '*Size:* ' + data.get('size'),
         '*Colour:* ' + String(data.get('color')).trim(),
-        '*Quantity:* ' + data.get('quantity'),
         '',
         '📍 *DELIVERY ADDRESS*',
         String(data.get('address')).trim(),
         '',
-        'Please confirm availability and the final order total.',
-        'Thank you for choosing NOVAIR FASHION HUB!'
-      ].join('\n');
+        '🌐 *FACEBOOK PAGE*',
+        'https://www.facebook.com/profile.php?id=61594655165925'
+      ].filter(line => line !== null).join('\n');
 
       const whatsappUrl = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(message);
       window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
