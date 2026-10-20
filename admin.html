@@ -14,7 +14,7 @@ main{max-width:950px;margin:28px auto;padding:0 15px}
 .card{background:var(--panel);border:1px solid var(--line);padding:22px;margin-bottom:18px;border-radius:8px}
 h1,h2{font-family:Georgia,serif;font-weight:400}
 label{display:block;margin:12px 0 5px;font-size:13px}
-input,textarea{width:100%;padding:12px;border:1px solid var(--line);background:white;font:inherit;border-radius:4px}
+input,textarea,select{width:100%;padding:12px;border:1px solid var(--line);background:white;font:inherit;border-radius:4px}
 textarea{min-height:75px}
 button{padding:12px 16px;border:1px solid var(--gold);background:var(--gold);color:white;cursor:pointer;border-radius:4px;margin:8px 5px 0 0}
 .secondary{background:transparent;color:var(--ink)}
@@ -61,6 +61,10 @@ button{padding:12px 16px;border:1px solid var(--gold);background:var(--gold);col
 </div>
 <label>Description</label>
 <textarea id="description" maxlength="2000"></textarea>
+<label>Product category *</label>
+<select id="category" required>
+  <option value="">Choose a category</option>
+</select>
 <label>Product photos (select multiple)</label>
 <input id="photos" type="file" accept="image/jpeg,image/png,image/webp" multiple>
 <p class="muted">JPG, PNG or WebP. Maximum 8 MB per image. Existing images remain when editing.</p>
@@ -69,6 +73,17 @@ button{padding:12px 16px;border:1px solid var(--gold);background:var(--gold);col
 <button type="button" class="secondary hidden" id="cancel">Cancel Edit</button>
 </form>
 <div class="status" id="productStatus"></div>
+</section>
+
+<section class="card hidden" id="categoryManager">
+  <h2>Category Management</h2>
+  <p class="muted">Add categories here. They can then be selected when adding or editing products.</p>
+  <div class="grid">
+    <div><label for="newCategory">New category name</label><input id="newCategory" maxlength="80" placeholder="e.g. Kids Fashion"></div>
+    <div style="display:flex;align-items:end"><button type="button" id="addCategory">Add Category</button></div>
+  </div>
+  <div class="status" id="categoryStatus"></div>
+  <div id="categoryList"></div>
 </section>
 
 <section class="card hidden" id="catalog">
@@ -97,6 +112,49 @@ const db = createClient(SUPABASE_URL, SUPABASE_KEY, {
   }
 });
 let admin = null;
+let categories = [];
+
+async function loadCategories(selectedValue = '') {
+  if (!admin) return;
+  const {data, error} = await db.from('categories').select('id,name').order('name');
+  if (error) {
+    say('categoryStatus', 'Could not load categories: ' + error.message + '. Run the setup SQL first.');
+    return;
+  }
+  categories = data || [];
+  const select = $('category');
+  select.replaceChildren(new Option('Choose a category', ''));
+  for (const category of categories) select.add(new Option(category.name, category.name));
+  if (selectedValue && categories.some(c => c.name === selectedValue)) select.value = selectedValue;
+  const list = $('categoryList');
+  list.replaceChildren();
+  if (!categories.length) {
+    list.textContent = 'No categories yet. Add your first category above.';
+    return;
+  }
+  for (const category of categories) {
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)';
+    const name = document.createElement('span');
+    name.textContent = category.name;
+    const remove = document.createElement('button');
+    remove.className = 'danger';
+    remove.type = 'button';
+    remove.textContent = 'Delete';
+    remove.onclick = async () => {
+      if (!confirm('Delete category "' + category.name + '"? Products assigned to it must be reassigned first.')) return;
+      const {data: used, error: useError} = await db.from('products').select('id').eq('category', category.name).limit(1);
+      if (useError) return say('categoryStatus', 'Could not check category usage: ' + useError.message);
+      if (used && used.length) return say('categoryStatus', 'This category is used by products. Reassign those products before deleting it.');
+      const {error: deleteError} = await db.from('categories').delete().eq('id', category.id);
+      if (deleteError) return say('categoryStatus', 'Could not delete category: ' + deleteError.message);
+      say('categoryStatus', 'Category deleted.');
+      await loadCategories();
+    };
+    row.append(name, remove);
+    list.append(row);
+  }
+}
 
 function showAdmin(user) {
   admin = user;
@@ -105,6 +163,8 @@ function showAdmin(user) {
   show('signOut');
   show('editor');
   show('catalog');
+  show('categoryManager');
+  loadCategories();
   loadProducts();
 }
 
@@ -155,9 +215,23 @@ $('signOut').onclick = async () => {
   admin = null;
   show('editor', false);
   show('catalog', false);
+  show('categoryManager', false);
   show('signOut', false);
   show('login', true);
   say('loginStatus', 'Signed out.');
+};
+
+$('addCategory').onclick = async () => {
+  if (!admin) return say('categoryStatus', 'Please sign in first.');
+  const name = $('newCategory').value.trim();
+  if (!name) return say('categoryStatus', 'Enter a category name.');
+  const exists = categories.some(c => c.name.toLowerCase() === name.toLowerCase());
+  if (exists) return say('categoryStatus', 'That category already exists.');
+  const {error} = await db.from('categories').insert({name});
+  if (error) return say('categoryStatus', 'Could not add category: ' + error.message);
+  $('newCategory').value = '';
+  say('categoryStatus', 'Category added successfully.');
+  await loadCategories(name);
 };
 
 $('productForm').onsubmit = async event => {
@@ -195,6 +269,7 @@ $('productForm').onsubmit = async event => {
     const rawPrice = $('price').value;
     const product = {
       name: $('name').value.trim(),
+      category: $('category').value,
       description: $('description').value.trim(),
       price: rawPrice === '' ? null : Number(rawPrice),
       bundle_text: $('bundle').value.trim(),
@@ -220,6 +295,7 @@ function resetForm() {
   $('productForm').reset();
   $('productId').value = '';
   $('active').checked = true;
+  $('category').value = '';
   $('editorTitle').textContent = 'Add a Product';
   $('save').textContent = 'Save Product';
   show('cancel', false);
@@ -252,7 +328,7 @@ async function loadProducts() {
     const details = document.createElement('p');
     details.className = 'muted';
     details.textContent = (p.price == null ? 'Price not set' : p.price + ' QAR')
-      + ' · ' + (p.bundle_text || 'No offer')
+      + ' · ' + (p.category || 'No category') + ' · ' + (p.bundle_text || 'No offer')
       + ' · ' + (p.is_active ? 'Visible' : 'Hidden');
 
     const edit = document.createElement('button');
@@ -264,6 +340,7 @@ async function loadProducts() {
       $('price').value = p.price ?? '';
       $('bundle').value = p.bundle_text || '';
       $('description').value = p.description || '';
+      $('category').value = p.category || '';
       $('active').checked = !!p.is_active;
       $('editorTitle').textContent = 'Edit Product';
       $('save').textContent = 'Update Product';
