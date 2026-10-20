@@ -5,13 +5,35 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>NOVAIR FASHION HUB | Admin</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23171512'/%3E%3Ctext x='32' y='47' font-family='Georgia,serif' font-size='48' font-weight='bold' text-anchor='middle' fill='%23d9c8ad'%3EN%3C/text%3E%3C/svg%3E">
 <style>
 :root{--bg:#e9e1d5;--panel:#f8f3eb;--ink:#171512;--gold:#8b7049;--line:#cfc3b2}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px Arial,sans-serif}
-header{background:var(--ink);color:white;padding:20px;letter-spacing:2px;font-weight:bold}
-main{max-width:950px;margin:28px auto;padding:0 15px}
-.card{background:var(--panel);border:1px solid var(--line);padding:22px;margin-bottom:18px;border-radius:8px}
+header{background:var(--ink);color:white;padding:14px 28px;letter-spacing:2px;font-weight:bold;display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:10;box-shadow:0 3px 14px #17151212}
+.brand{display:flex;align-items:center;gap:13px;min-width:0}
+.brand-logo{width:46px;height:46px;object-fit:contain;display:block;background:#f8f3eb;border-radius:50%;padding:4px}
+.brand-name{line-height:1.45}
+.brand-name small{display:block;font-size:10px;letter-spacing:2.2px;color:#d9c8ad;font-weight:normal;margin-top:2px}
+.header-tag{font-size:11px;letter-spacing:1px;color:#d9c8ad;border:1px solid #8b704966;padding:7px 10px;border-radius:20px}
+.app-shell{display:grid;grid-template-columns:220px minmax(0,1fr);gap:24px;max-width:1400px;margin:24px auto;padding:0 22px;align-items:start}
+.sidebar{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;position:sticky;top:88px}
+.sidebar-label{font-size:10px;letter-spacing:1.8px;color:#817565;font-weight:bold;margin:4px 10px 12px}
+.nav-link{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--ink);padding:12px 11px;border-radius:6px;margin:3px 0;font-size:13px;transition:background .2s}
+.nav-link:hover,.nav-link.active{background:#e9dfd0;color:#5f4728}
+.nav-icon{width:22px;text-align:center;font-size:16px}
+.sidebar-note{margin:20px 5px 3px;padding:13px;background:#eee5d8;border-radius:7px;font-size:12px;line-height:1.6;color:#6f685e}
+main{min-width:0;margin:0;padding:0}
+.card{background:var(--panel);border:1px solid var(--line);padding:24px;margin-bottom:18px;border-radius:10px;box-shadow:0 4px 16px #17151208}
+.card h1,.card h2{margin-top:0}
+#dashboard{background:linear-gradient(120deg,#f8f3eb,#efe5d6);padding:25px}
+.eyebrow{font-size:10px;letter-spacing:2px;color:var(--gold);font-weight:bold;text-transform:uppercase}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:22px}
+.stat{background:#fffaf3;border:1px solid var(--line);border-radius:8px;padding:16px;min-width:0}
+.stat-label{font-size:12px;color:#6f685e}
+.stat-value{font:30px Georgia,serif;margin-top:8px;color:var(--ink)}
+.section-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.section-heading p{margin-bottom:0}
 h1,h2{font-family:Georgia,serif;font-weight:400}
 label{display:block;margin:12px 0 5px;font-size:13px}
 input,textarea,select{width:100%;padding:12px;border:1px solid var(--line);background:white;font:inherit;border-radius:4px}
@@ -22,20 +44,47 @@ button{padding:12px 16px;border:1px solid var(--gold);background:var(--gold);col
 .status{background:#eee5d8;padding:10px;margin-top:12px;white-space:pre-wrap;overflow-wrap:anywhere}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .products{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
-.product{background:white;border:1px solid var(--line);padding:10px;overflow-wrap:anywhere}
-.product img{width:100%;height:160px;object-fit:cover;background:#eee}
-.product h3{font:19px Georgia,serif}
+.product{background:white;border:1px solid var(--line);padding:10px;border-radius:8px;overflow-wrap:anywhere;transition:transform .18s,box-shadow .18s}
+.product:hover{transform:translateY(-2px);box-shadow:0 7px 18px #17151212}
+.product img{width:100%;height:175px;object-fit:cover;background:#eee;border-radius:5px}
+.product h3{font:19px Georgia,serif;margin:12px 0 8px}
+.product button{margin-top:5px}
 .muted{color:#6f685e;font-size:13px}
 .hidden{display:none!important}
-@media(max-width:600px){.grid{grid-template-columns:1fr}.card{padding:15px}}
+input:focus,textarea:focus,select:focus{outline:2px solid #8b704944;border-color:var(--gold)}
+button{transition:filter .2s,transform .2s}
+button:hover{filter:brightness(.96);transform:translateY(-1px)}
+@media(max-width:850px){.app-shell{grid-template-columns:1fr;gap:12px;margin:14px auto;padding:0 12px}.sidebar{position:static;padding:10px;overflow-x:auto}.sidebar-label,.sidebar-note{display:none}.nav-list{display:flex;gap:4px;min-width:max-content}.nav-link{margin:0;padding:10px}.stats{grid-template-columns:repeat(3,minmax(0,1fr))}header{padding:12px 14px}.brand-logo{width:40px;height:40px}.brand-name{font-size:13px;letter-spacing:1.1px}.brand-name small{font-size:9px;letter-spacing:1.4px}}
+@media(max-width:600px){.grid{grid-template-columns:1fr}.card{padding:16px}.stats{gap:7px}.stat{padding:11px}.stat-value{font-size:24px}.stat-label{font-size:11px}.header-tag{display:none}.product img{height:145px}}
 </style>
 </head>
 <body>
-<header>NOVAIR FASHION HUB — ADMIN</header>
+<header><div class="brand"><img class="brand-logo" src="novair-logo.png" alt="NOVAIR logo"><div class="brand-name">NOVAIR FASHION HUB <span style="color:#b69a70">— ADMIN</span><small>STORE MANAGEMENT</small></div></div><span class="header-tag">ADMIN WORKSPACE</span></header>
+<div class="app-shell">
+<aside class="sidebar hidden" id="sidebar">
+  <div class="sidebar-label">WORKSPACE</div>
+  <nav class="nav-list">
+    <a class="nav-link active" href="#dashboard"><span class="nav-icon">⌂</span>Dashboard</a>
+    <a class="nav-link" href="#editor"><span class="nav-icon">＋</span>Add Product</a>
+    <a class="nav-link" href="#categoryManager"><span class="nav-icon">▦</span>Categories</a>
+    <a class="nav-link" href="#catalog"><span class="nav-icon">▤</span>Products</a>
+  </nav>
+  <div class="sidebar-note">NOVAIR FASHION HUB<br>Manage your store in one place.</div>
+</aside>
 <main>
-<section class="card">
+<section class="card" id="welcome">
+<span class="eyebrow">Admin workspace</span>
 <h1>Product Management</h1>
 <p class="muted">Manage your fashion products securely.</p>
+</section>
+<section class="card hidden" id="dashboard">
+  <span class="eyebrow">Store overview</span>
+  <div class="section-heading"><div><h2 style="margin:8px 0">Dashboard</h2><p class="muted">A quick look at your store.</p></div></div>
+  <div class="stats">
+    <div class="stat"><div class="stat-label">Total Products</div><div class="stat-value" id="totalProducts">—</div></div>
+    <div class="stat"><div class="stat-label">Active Products</div><div class="stat-value" id="activeProducts">—</div></div>
+    <div class="stat"><div class="stat-label">Categories</div><div class="stat-value" id="totalCategories">—</div></div>
+  </div>
 </section>
 
 <section class="card hidden" id="login">
@@ -92,6 +141,7 @@ button{padding:12px 16px;border:1px solid var(--gold);background:var(--gold);col
 <div class="products" id="list"></div>
 </section>
 </main>
+</div>
 
 <script type="module">
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
@@ -122,6 +172,7 @@ async function loadCategories(selectedValue = '') {
     return;
   }
   categories = data || [];
+  $('totalCategories').textContent = categories.length;
   const select = $('category');
   select.replaceChildren(new Option('Choose a category', ''));
   for (const category of categories) select.add(new Option(category.name, category.name));
@@ -160,6 +211,9 @@ function showAdmin(user) {
   admin = user;
   say('loginStatus', 'Signed in as ' + (admin.email || 'admin'));
   show('login');
+  show('sidebar');
+  show('welcome', false);
+  show('dashboard');
   show('signOut');
   show('editor');
   show('catalog');
@@ -178,6 +232,10 @@ async function checkAdmin(user) {
     admin = null;
     show('editor', false);
     show('catalog', false);
+    show('categoryManager', false);
+    show('dashboard', false);
+    show('sidebar', false);
+    show('welcome', true);
     show('signOut', false);
     show('login', true);
     say('loginStatus', error
@@ -216,6 +274,9 @@ $('signOut').onclick = async () => {
   show('editor', false);
   show('catalog', false);
   show('categoryManager', false);
+  show('dashboard', false);
+  show('sidebar', false);
+  show('welcome', true);
   show('signOut', false);
   show('login', true);
   say('loginStatus', 'Signed out.');
@@ -303,6 +364,12 @@ function resetForm() {
 
 $('cancel').onclick = resetForm;
 $('refresh').onclick = loadProducts;
+document.querySelectorAll('.nav-link').forEach(link => {
+  link.addEventListener('click', () => {
+    document.querySelectorAll('.nav-link').forEach(item => item.classList.remove('active'));
+    link.classList.add('active');
+  });
+});
 
 async function loadProducts() {
   if (!admin) return;
@@ -313,8 +380,11 @@ async function loadProducts() {
 
   const list = $('list');
   list.replaceChildren();
+  const products = data || [];
+  $('totalProducts').textContent = products.length;
+  $('activeProducts').textContent = products.filter(p => p.is_active).length;
 
-  for (const p of data || []) {
+  for (const p of products) {
     const card = document.createElement('article');
     card.className = 'product';
 
